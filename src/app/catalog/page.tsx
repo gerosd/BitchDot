@@ -67,9 +67,9 @@ export default async function CatalogPage({
                     <div className="flex items-center gap-3">
                         <CatalogFilter categories={categoriesData} />
 
-                        {(categories.length > 0 || subcategories.length > 0) && (
+                        {(categories.length > 0 || subcategories.length > 0 || query) && (
                             <Link href="/catalog" className="text-sm font-medium text-surface-content-muted hover:text-black">
-                                Очистить
+                                {query && categories.length === 0 && subcategories.length === 0 ? 'Сбросить поиск' : 'Очистить все'}
                             </Link>
                         )}
                     </div>

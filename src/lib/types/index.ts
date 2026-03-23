@@ -54,3 +54,18 @@ export interface Review {
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+export interface AboutValue {
+    title: string;
+    description: string;
+}
+
+export interface AboutBrandData {
+    _id?: string | ObjectId;
+    heroImage: string;
+    title: string;
+    subtitle: string;
+    philosophyText: string[];
+    valuesTitle: string;
+    values: AboutValue[];
+}

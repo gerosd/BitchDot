@@ -1,6 +1,7 @@
 import Container from '@/components/ui/Container';
 import Link from 'next/link';
 import { getProductsAction } from '@/lib/actions/product-actions';
+import Image from 'next/image';
 
 export default async function AdminProductsPage() {
     const products = await getProductsAction();
@@ -39,7 +40,13 @@ export default async function AdminProductsPage() {
                                     <td className="px-6 py-4 font-medium">
                                         <div className="flex items-center gap-3">
                                             {product.image && (
-                                                <img src={product.image} alt="" className="w-10 h-10 rounded-lg object-cover bg-gray-100" />
+                                                <Image
+                                                    src={product.image}
+                                                    alt="Product image"
+                                                    className="w-10 h-10 rounded-lg object-cover bg-gray-100"
+                                                    width={40}
+                                                    height={40}
+                                                />
                                             )}
                                             {product.title}
                                             {product.isBestseller && (
@@ -47,7 +54,7 @@ export default async function AdminProductsPage() {
                                             )}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-600">{product.categories?.join(', ') || (product as any).category}</td>
+                                    <td className="px-6 py-4 text-gray-600">{product.categories.join(', ') || []}</td>
                                     <td className="px-6 py-4 font-medium">{product.price} ₽</td>
                                     <td className="px-6 py-4 font-medium">{product.discPrice || product.price} ₽</td>
                                     <td className="px-6 py-4">

@@ -31,7 +31,7 @@ export async function getReviewById(id: string) {
     let objectId;
     try {
         objectId = new ObjectId(id);
-    } catch (e) {
+    } catch {
         return null;
     }
     return await collection.findOne({ _id: objectId });
@@ -52,7 +52,7 @@ export async function updateReview(id: string, data: Partial<Review>) {
     let objectId;
     try {
         objectId = new ObjectId(id);
-    } catch (e) {
+    } catch {
         return false;
     }
     const result = await collection.updateOne(
@@ -72,7 +72,7 @@ export async function deleteReview(id: string) {
     let objectId;
     try {
         objectId = new ObjectId(id);
-    } catch (e) {
+    } catch {
         return false;
     }
     const result = await collection.deleteOne({ _id: objectId });
