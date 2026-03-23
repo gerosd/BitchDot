@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+    --color-base: var(--base);
+    --color-base-content: var(--base-content);
+
+    --color-surface: var(--surface);
+    --color-surface-muted: var(--surface-muted);
+    --color-surface-content: var(--surface-content);
+    --color-surface-content-muted: var(--surface-content-muted);
+
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-content: var(--primary-content);
+
+    --color-border: var(--border);
+    --color-border-light: var(--border-light);
+
+    --color-accent: var(--accent);
+}
+
+@layer base {
+    :root {
+        --base: #ffffff;
+        --base-content: #111827;
+
+        --surface: #f9fafb;
+        --surface-muted: #f3f4f6;
+        --surface-content: #374151;
+        --surface-content-muted: #6b7280;
+        --primary: #000000;
+        --primary-hover: #1f2937;
+        --primary-content: #ffffff;
+        --border: #e5e7eb;
+        --border-light: #f3f4f6;
+        --accent: #e33f38;
+    }
+
+    body {
+        background-color: var(--base);
+        color: var(--base-content);
+        font-family: Montserrat, sans-serif;
+    }
+
+    a, button {
+        cursor: pointer;
+    }
+}
+
