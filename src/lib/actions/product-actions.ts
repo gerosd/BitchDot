@@ -22,7 +22,7 @@ export async function getProductsAction(params?: {
     sort?: Record<string, 1 | -1>;
 }) {
     try {
-        let query: Record<string, any> = {};
+        const query: Record<string, any> = {};
 
         if (params?.category) {
             if (Array.isArray(params.category)) {

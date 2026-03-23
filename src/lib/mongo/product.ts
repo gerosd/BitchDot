@@ -41,8 +41,8 @@ export const createProduct = async (productData: Omit<Product, '_id' | 'createdA
         const collection = await getProductsCollection()
         const date = new Date()
         const newProduct = { ...productData, createdAt: date, updatedAt: date }
-        const result = await collection.insertOne(newProduct as any)
-        return { ...newProduct, _id: result.insertedId } as MongoProduct
+        const result = await collection.insertOne(newProduct)
+        return { ...newProduct, _id: result.insertedId }
     }, 'создании нового товара')
 }
 

@@ -8,6 +8,7 @@ import { uploadImageAction } from '@/lib/actions/upload-actions';
 import { Category } from '@/lib/types';
 import Link from 'next/link';
 import MultiSelect from '../ui/MultiSelect';
+import Image from 'next/image';
 
 export default function ProductForm({ initialData, categories }: { initialData?: Product, categories: Category[] }) {
     const router = useRouter();
@@ -166,7 +167,13 @@ export default function ProductForm({ initialData, categories }: { initialData?:
                                 <div className="flex flex-wrap gap-3">
                                     {currentImages.map((imgUrl, index) => (
                                         <div key={index} className="relative group w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
-                                            <img src={imgUrl} alt={`Product ${index}`} className="w-full h-full object-cover" />
+                                            <Image
+                                                src={imgUrl}
+                                                alt={`Product ${index}`}
+                                                className="w-full h-full object-cover"
+                                                width={96}
+                                                height={96}
+                                            />
                                             {index === 0 && (
                                                 <div className="absolute bottom-0 left-0 right-0 bg-blue-600/90 text-[9px] text-white text-center py-0.5 font-bold uppercase z-10">Главное</div>
                                             )}
@@ -200,7 +207,7 @@ export default function ProductForm({ initialData, categories }: { initialData?:
                     <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                         <div className="flex justify-between items-center mb-4">
                             <label className="block text-sm font-semibold">Характеристики</label>
-                            <button type="button" onClick={() => setSpecs([...specs, { key: '', value: '' }])} className="text-xs font-semibold text-blue-600 hover:text-blue-700 font-medium">
+                            <button type="button" onClick={() => setSpecs([...specs, { key: '', value: '' }])} className="text-xs font-semibold text-blue-600 hover:text-blue-700">
                                 + Добавить
                             </button>
                         </div>
@@ -244,7 +251,7 @@ export default function ProductForm({ initialData, categories }: { initialData?:
                                 </div>
                             </div>
                             {wbArticle.trim() && (
-                                <p className="text-xs text-gray-400 pl-[152px] -mt-1 truncate">
+                                <p className="text-xs text-gray-400 pl-38 -mt-1 truncate">
                                     → https://www.wildberries.ru/catalog/{wbArticle.trim()}/detail.aspx
                                 </p>
                             )}
@@ -266,7 +273,7 @@ export default function ProductForm({ initialData, categories }: { initialData?:
                                 </div>
                             </div>
                             {ozonArticle.trim() && (
-                                <p className="text-xs text-gray-400 pl-[152px] -mt-1 truncate">
+                                <p className="text-xs text-gray-400 pl-38 -mt-1 truncate">
                                     → https://www.ozon.ru/product/{ozonArticle.trim()}/
                                 </p>
                             )}

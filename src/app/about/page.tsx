@@ -1,4 +1,6 @@
 import Container from '@/components/ui/Container';
+import Image from "next/image";
+import {GiMaterialsScience, GiPlantsAndAnimals, GiVial} from "react-icons/gi";
 
 export default function AboutPage() {
     return (
@@ -8,14 +10,16 @@ export default function AboutPage() {
                     src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2600&auto=format&fit=crop"
                     alt="About BitchDot"
                     className="object-cover opacity-80 h-full absolute"
+                    width={3840}
+                    height={2160}
                 />
-                <div className="absolute h-full inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+                <div className="absolute h-full inset-0 bg-linear-to-t from-gray-900/60 to-transparent" />
                 <Container className="relative z-10 text-center">
                     <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6">
                         О бренде BitchDot
                     </h1>
                     <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium">
-                        Научный подход к красоте с 2001 года
+                        Научный подход к красоте с 2022 года
                     </p>
                 </Container>
             </section>
@@ -48,12 +52,12 @@ export default function AboutPage() {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                         {[
-                            { title: 'Научный подход', desc: 'Собственная лаборатория и сотрудничество с ведущими европейскими институтами.', icon: '🧪' },
-                            { title: 'Эффективность', desc: 'Рабочие концентрации активных компонентов в каждом флаконе.', icon: '✨' },
-                            { title: 'Безопасность', desc: 'Не тестируется на животных. Строгий контроль качества.', icon: '🌿' }
+                            { title: 'Научный подход', desc: 'Собственная лаборатория и сотрудничество с ведущими европейскими институтами.', icon: <GiMaterialsScience /> },
+                            { title: 'Эффективность', desc: 'Рабочие концентрации активных компонентов в каждом флаконе.', icon: <GiVial /> },
+                            { title: 'Безопасность', desc: 'Не тестируется на животных. Строгий контроль качества.', icon: <GiPlantsAndAnimals /> }
                         ].map((item, i) => (
                             <div key={i} className="bg-base p-8 rounded-3xl shadow-sm border border-border text-center">
-                                <div className="text-5xl mb-6">{item.icon}</div>
+                                <div className="text-5xl mb-6 flex items-center justify-center">{item.icon}</div>
                                 <h3 className="text-xl font-bold text-base-content mb-4">{item.title}</h3>
                                 <p className="text-surface-content">{item.desc}</p>
                             </div>

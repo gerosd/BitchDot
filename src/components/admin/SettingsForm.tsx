@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { SiteSettings } from '@/lib/types';
 import { updateSettingsAction } from '@/lib/actions/settings-actions';
 import { uploadImageAction } from '@/lib/actions/upload-actions';
+import Image from "next/image";
 
 export default function SettingsForm({ initialData }: { initialData?: SiteSettings | null }) {
     const router = useRouter();
@@ -64,7 +65,13 @@ export default function SettingsForm({ initialData }: { initialData?: SiteSettin
                         {initialData?.heroBanner?.imageUrl && (
                             <div className="mt-3">
                                 <p className="text-xs text-gray-500 mb-1">Текущее изображение:</p>
-                                <img src={initialData.heroBanner.imageUrl} alt="Preview" className="h-24 rounded-lg object-cover border border-gray-200" />
+                                <Image
+                                    src={initialData.heroBanner.imageUrl}
+                                    alt="Preview"
+                                    className="h-24 rounded-lg object-cover border border-gray-200"
+                                    width={200}
+                                    height={200}
+                                />
                             </div>
                         )}
                     </div>
