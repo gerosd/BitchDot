@@ -2,9 +2,28 @@ import { getSettingsAction } from '@/lib/actions/settings-actions';
 import Container from '@/components/ui/Container';
 import WBLogo from "@/components/ui/WBLogo";
 import OZONLogo from "@/components/ui/OZONLogo";
+import { cookies } from 'next/headers';
+import Link from "next/link";
 
 export default async function WhereToBuyPage() {
     const settings = await getSettingsAction();
+    const cookieStore = await cookies();
+    const isAdmin = cookieStore.has('admin_session');
+    const isSiteON = settings?.isSiteEnabled ?? false;
+    const shouldLoadFromDB = isSiteON || isAdmin;
+
+    if (!shouldLoadFromDB) {
+        return (
+            <div className="py-24 text-center min-h-[50vh] flex flex-col items-center justify-center">
+                <h1 className="text-4xl font-bold">Сайт находится на обслуживании</h1>
+                <p className="text-gray-500 mt-4">Раздел магазинов временно недоступен.</p>
+                <Link href="/" className="px-6 py-3 mt-8 bg-gray-900 text-white font-medium rounded hover:bg-gray-800 transition-colors">
+                    На главную
+                </Link>
+            </div>
+        );
+    }
+
     const wbUrl = settings?.whereToBuy?.wildberriesUrl;
     const ozonUrl = settings?.whereToBuy?.ozonUrl;
 

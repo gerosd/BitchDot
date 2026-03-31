@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import Container from '../ui/Container';
+import { Category } from '@/lib/types';
 
-export default function Footer() {
+export default function Footer({ categories = [] }: { categories?: Category[] }) {
+    const displayCategories = categories.slice(0, 3);
+
     return (
         <footer className="bg-surface pt-16 pb-8 border-t border-border mt-auto">
             <Container>
@@ -18,9 +21,16 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-base-content mb-6">Каталог</h4>
                         <ul className="space-y-4">
-                            <li><Link href="/catalog?category=face" className="text-surface-content hover:text-base-content text-sm transition-colors">Для лица</Link></li>
-                            <li><Link href="/catalog?category=body" className="text-surface-content hover:text-base-content text-sm transition-colors">Для тела</Link></li>
-                            <li><Link href="/catalog?category=hair" className="text-surface-content hover:text-base-content text-sm transition-colors">Для волос</Link></li>
+                            {displayCategories.map((category) => (
+                                <li key={String(category._id)}>
+                                    <Link 
+                                        href={`/catalog?category=${category._id}`} 
+                                        className="text-surface-content hover:text-base-content text-sm transition-colors"
+                                    >
+                                        {category.name}
+                                    </Link>
+                                </li>
+                            ))}
                             <li><Link href="/catalog" className="text-surface-content hover:text-base-content text-sm transition-colors mt-2 font-medium">Смотреть все</Link></li>
                         </ul>
                     </div>
@@ -32,6 +42,7 @@ export default function Footer() {
                             <li><Link href="/where-to-buy" className="text-surface-content hover:text-base-content text-sm transition-colors">Где купить</Link></li>
                         </ul>
                     </div>
+
 
                 </div>
 

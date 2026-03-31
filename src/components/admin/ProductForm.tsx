@@ -34,13 +34,9 @@ export default function ProductForm({ initialData, categories }: { initialData?:
     const initialImages = initialData?.images || (initialData?.image ? [initialData.image] : []);
     const [currentImages, setCurrentImages] = useState<string[]>(initialImages);
 
-    const [selectedCategories, setSelectedCategories] = useState<string[]>(
-        initialData?.categories || ((initialData as any)?.category ? [(initialData as any).category as string] : [])
-    );
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(initialData?.categories || []);
 
-    const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
-        initialData?.subcategories || ((initialData as any)?.subcategory ? [(initialData as any).subcategory as string] : [])
-    );
+    const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(initialData?.subcategories || []);
 
     const availableSubcategories = categories
         .filter(c => selectedCategories.includes(c.name))

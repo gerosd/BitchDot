@@ -4,6 +4,8 @@ import { getCategoriesAction } from '@/lib/actions/category-actions';
 import Container from '@/components/ui/Container';
 import ProductCard from '@/components/ui/ProductCard';
 import CatalogFilter from '@/components/catalog/CatalogFilter';
+import { getSettingsAction } from '@/lib/actions/settings-actions';
+import { cookies } from 'next/headers';
 
 export default async function CatalogPage({
     searchParams,
@@ -11,6 +13,24 @@ export default async function CatalogPage({
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
     const params = await searchParams;
+
+    const settings = await getSettingsAction();
+    const cookieStore = await cookies();
+    const isAdmin = cookieStore.has('admin_session');
+    const isSiteON = settings?.isSiteEnabled ?? false;
+    const shouldLoadFromDB = isSiteON || isAdmin;
+
+    if (!shouldLoadFromDB) {
+        return (
+            <Container className="py-24 text-center min-h-[50vh] flex flex-col items-center justify-center">
+                <h1 className="text-4xl font-bold">Сайт находится на обслуживании</h1>
+                <p className="text-gray-500 mt-4">В данный момент каталог недоступен.</p>
+                <Link href="/" className="px-6 py-3 mt-8 bg-gray-900 text-white font-medium rounded hover:bg-gray-800 transition-colors">
+                    На главную
+                </Link>
+            </Container>
+        );
+    }
 
     const query = typeof params.q === 'string' ? params.q : undefined;
 

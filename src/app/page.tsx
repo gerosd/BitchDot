@@ -7,32 +7,56 @@ import Container from '@/components/ui/Container';
 import ProductCard from '@/components/ui/ProductCard';
 import ReviewCard from '@/components/ui/ReviewCard';
 import Image from "next/image";
+import { cookies } from 'next/headers';
+import {Product, Review} from "@/lib/types";
 
 export default async function Home() {
     const settings = await getSettingsAction();
-    const bestsellers = await getProductsAction({ isBestseller: true, limit: 4 });
-    const reviews = await getReviewsAction({ limit: 3 });
 
-    const heroBanner = settings?.heroBanner || {
-        title: 'Инновации в уходе за кожей',
-        subtitle: 'Откройте для себя новые формулы с пептидами и витамином С для сияющей и здоровой кожи.',
-        imageUrl: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=2600&auto=format&fit=crop',
-        buttonText: 'В каталог',
-        buttonLink: '/catalog'
-    };
+    const cookieStore = await cookies();
+    const isAdmin = cookieStore.has('admin_session');
+    const isSiteON = settings?.isSiteEnabled ?? false;
+    const shouldLoadFromDB = isSiteON || isAdmin;
+
+    let bestsellers: Product[];
+    let reviews: Review[];
+
+    if (shouldLoadFromDB) {
+        bestsellers = await getProductsAction({ isBestseller: true, limit: 4 });
+        reviews = await getReviewsAction({ limit: 3 });
+    } else {
+        bestsellers = [];
+        reviews = [];
+    }
+
+    let heroBanner
+
+    if (shouldLoadFromDB && settings?.heroBanner) {
+        heroBanner = settings?.heroBanner
+    } else {
+        heroBanner = {
+            title: 'Сайт находится на обслуживании',
+            subtitle: 'В данный момент сайт недоступен.',
+            imageUrl: '',
+            buttonText: '',
+            buttonLink: '/'
+        };
+    }
 
     return (
         <>
             {/* hero секция */}
             <section className="relative h-[80vh] min-h-150 flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <Image
-                        src={heroBanner.imageUrl}
-                        alt="Hero Banner"
-                        className="object-cover w-full h-full"
-                        width={1920}
-                        height={1080}
-                    />
+                    {heroBanner.imageUrl &&
+                        <Image
+                            src={heroBanner.imageUrl}
+                            alt="Hero Banner"
+                            className="object-cover w-full h-full"
+                            width={1920}
+                            height={1080}
+                        />
+                    }
                     <div className="absolute inset-0 bg-black/20" />
                 </div>
 
@@ -44,11 +68,13 @@ export default async function Home() {
                         <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto font-medium">
                             {heroBanner.subtitle}
                         </p>
-                        <Link href={heroBanner.buttonLink}>
-                            <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-10 rounded-full font-bold shadow-lg">
-                                {heroBanner.buttonText}
-                            </Button>
-                        </Link>
+                        {shouldLoadFromDB &&
+                            <Link href={heroBanner.buttonLink}>
+                                <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-10 rounded-full font-bold shadow-lg">
+                                    {heroBanner.buttonText}
+                                </Button>
+                            </Link>
+                        }
                     </div>
                 </Container>
             </section>

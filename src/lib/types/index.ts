@@ -28,6 +28,7 @@ export interface Category {
 
 export interface SiteSettings {
     _id?: string | ObjectId;
+    isSiteEnabled?: boolean;
     heroBanner?: {
         imageUrl: string;
         title: string;
@@ -44,7 +45,13 @@ export interface SiteSettings {
         wildberriesUrl: string;
         ozonUrl: string;
     };
+    analyticsScripts?: {
+        head?: string;
+        bodyStart?: string;
+        bodyEnd?: string;
+    };
 }
+
 
 export interface Review {
     _id?: string | ObjectId;

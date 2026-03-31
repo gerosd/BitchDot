@@ -4,7 +4,9 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { getCategoriesAction } from "@/lib/actions/category-actions";
-import {ThemeModeScript} from "flowbite-react";
+import { getSettingsAction } from "@/lib/actions/settings-actions";
+import InjectScripts from "@/components/layout/InjectScripts";
+import { cookies } from "next/headers";
 
 const montserrat = Montserrat({
     variable: "--font-montserrat",
@@ -12,7 +14,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-    title: "BitchDot",
+    title: "BITCHDOT",
 };
 
 export default async function RootLayout({
@@ -20,17 +22,38 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const settings = await getSettingsAction().catch(() => null);
+    
+    const cookieStore = await cookies();
+    const isAdmin = cookieStore.has('admin_session');
+    const isSiteON = settings?.isSiteEnabled ?? false;
+    const shouldLoadFromDB = isSiteON || isAdmin;
+
+    const categories = shouldLoadFromDB 
+        ? await getCategoriesAction().catch(() => []) 
+        : [];
+
+    const headScripts = settings?.analyticsScripts?.head;
+    const bodyStartScripts = settings?.analyticsScripts?.bodyStart;
+    const bodyEndScripts = settings?.analyticsScripts?.bodyEnd;
+
     return (
         <html lang="ru" suppressHydrationWarning>
+            {headScripts ? (
+                <head>
+                    <InjectScripts html={headScripts} />
+                </head>
+            ) : null}
             <body
                 className={`${montserrat.variable} font-montserrat antialiased min-h-screen flex flex-col`}
             >
-                <ThemeModeScript/>
-                <Header categories={await getCategoriesAction().catch(() => [])} />
+                {bodyStartScripts && <InjectScripts html={bodyStartScripts} />}
+                <Header categories={categories} shouldLoadFromDB={shouldLoadFromDB} />
                 <main className="grow">
                     {children}
                 </main>
-                <Footer />
+                <Footer categories={categories} />
+                {bodyEndScripts && <InjectScripts html={bodyEndScripts} />}
             </body>
         </html>
     );

@@ -1,12 +1,21 @@
 import Container from '@/components/ui/Container';
 import Link from 'next/link';
+import { logoutAction } from '@/lib/actions/auth-actions';
+import Button from '@/components/ui/Button';
 
 export default async function AdminPage() {
     return (
         <Container className="py-12">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-8">
-                Панель управления
-            </h1>
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                    Панель управления
+                </h1>
+                <form action={logoutAction}>
+                    <Button variant="outline" size="sm">
+                        Выйти
+                    </Button>
+                </form>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-6 flex flex-col rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">

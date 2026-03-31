@@ -1,8 +1,30 @@
 import Container from '@/components/ui/Container';
 import { getAboutAction } from '@/lib/actions/about-actions';
 import { AboutBrandData } from '@/lib/types';
+import { getSettingsAction } from '@/lib/actions/settings-actions';
+import { cookies } from 'next/headers';
+import Image from 'next/image';
+import Link from "next/link";
 
 export default async function AboutPage() {
+    const settings = await getSettingsAction();
+    const cookieStore = await cookies();
+    const isAdmin = cookieStore.has('admin_session');
+    const isSiteON = settings?.isSiteEnabled ?? false;
+    const shouldLoadFromDB = isSiteON || isAdmin;
+
+    if (!shouldLoadFromDB) {
+        return (
+            <div className="py-24 text-center min-h-[50vh] flex flex-col items-center justify-center">
+                <h1 className="text-4xl font-bold">Сайт находится на обслуживании</h1>
+                <p className="text-gray-500 mt-4">Раздел информации о бренде временно недоступен.</p>
+                <Link href="/" className="px-6 py-3 mt-8 bg-gray-900 text-white font-medium rounded hover:bg-gray-800 transition-colors">
+                    На главную
+                </Link>
+            </div>
+        );
+    }
+
     const data = await getAboutAction();
     const about = data as AboutBrandData;
 
@@ -13,7 +35,7 @@ export default async function AboutPage() {
     return (
         <div className="bg-base">
             <section className="relative h-screen flex items-center justify-center bg-surface">
-                <img
+                <Image
                     src={about.heroImage}
                     alt={about.title}
                     className="object-cover opacity-80 h-full absolute"
